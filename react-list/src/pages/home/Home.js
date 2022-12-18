@@ -1,10 +1,12 @@
 import './Home.css';
 import { Paper, Container } from '@mui/material';
 import GradeIcon from '@mui/icons-material/Grade';
-import {useEffect, useState} from "react";
+import ArticleIcon from '@mui/icons-material/Article';
+import {useState} from "react";
 import axios from "axios";
 import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
+import {Link} from "react-router-dom";
 
 
 export default function Home(){
@@ -15,20 +17,19 @@ export default function Home(){
         url: 'https://assignment-api.piton.com.tr/api/v1/product/all',
         headers: {
             'accept': 'application/json',
-            'access-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN0cmluZyIsImlhdCI6MTY0OTg2MDExMiwiZXhwIjoxNjc1NzgwMTEyfQ.z8XYELsP1GBKkGpyvI14WzJKQAAbtQUwCl3hlLs_U4M'
+            'access-token': JSON.parse(localStorage.getItem('user-info'))
         },
         data : ''
     };
-    useEffect(()=>{
-        axios(config)
-            .then(function (response) {
-                setDatas(response.data.products);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+    axios(config)
+        .then(function (response) {
+            setDatas(response.data.products);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
 
-    },[]);
+
     const Item = styled(Paper)(({ theme }) => ({
         backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
         ...theme.typography.body2,
@@ -39,7 +40,7 @@ export default function Home(){
     function addLikes(id){
             var myHeaders = new Headers();
             myHeaders.append("accept", "application/json");
-            myHeaders.append("access-token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN0cmluZyIsImlhdCI6MTY0OTg2MDExMiwiZXhwIjoxNjc1NzgwMTEyfQ.z8XYELsP1GBKkGpyvI14WzJKQAAbtQUwCl3hlLs_U4M");
+            myHeaders.append("access-token", JSON.parse(localStorage.getItem('user-info')));
             myHeaders.append("Content-Type", "application/json");
 
             var raw = JSON.stringify({
@@ -59,15 +60,22 @@ export default function Home(){
                     if(JSON.parse(result).status === "Success"){
                         if(!select.includes(id)){
                             setSelect(current => [...current, id]);
+                        }else {
+                            const newLike = select.filter(color => {
+                                if (color !== id ) {
+                                    return true;
+                                }
+                                return false;
+                            });
+                            setSelect(newLike);
                         }
-                        console.log(select)
                     }
                 })
                 .catch(error => console.log('error', error));
 
     }
     return(
-        <Container sx={{mt:12}}>
+        <Container sx={{mt:5}}>
             <Grid container spacing={2}>
                 <Grid item xs={2}>
                     <Item className="text-position">Name</Item>
@@ -87,9 +95,7 @@ export default function Home(){
                 <Grid item xs={1}>
                     <Item className="text-position">Likes</Item>
                 </Grid>
-                <Grid item xs={1}>
-
-                </Grid>
+                <Grid item xs={1}> </Grid>
             </Grid>
 
             <div>
@@ -116,16 +122,16 @@ export default function Home(){
                         <Grid item xs={1}>
                             <div className="table-body">
                                 <GradeIcon style={{ color: select.includes(obj.id )? "#ffd700" : "#b9b1b1"}} onClick={() => addLikes(obj.id)} color="primary" />
+
+                                <Link className="link" to={`/detail/${obj.id}`}>
+                                    <ArticleIcon color="secondary" />
+                                </Link>
+
                             </div>
                         </Grid>
                     </Grid>
                 ))}
-
-
             </div>
-
         </Container>
-
-
     )
 }

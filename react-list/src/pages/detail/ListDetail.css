@@ -1,0 +1,31 @@
+.product-datail .price{
+    margin-top: 15px;
+    color: #169535;
+    font-family: Merriweather, serif !important;
+    font-weight: 600;
+}
+.product-datail .name{
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 20px 60px 0 0;
+    font-family: Merriweather, serif !important;
+    position: relative;
+}
+.product-datail .description{
+    font-weight: 700;
+    font-size: 1.125rem;
+    margin: 18px auto 0 0;
+}
+.product-datail .name:before{
+    content: "|";
+    position: absolute;
+    left: 1.1rem;
+    top: -3rem;
+    font-size: 3rem;
+    color: #18a53b;
+    transform: rotate(90deg);
+}
+.product-img .img{
+    height: 514px;
+    margin: 0 auto 0 0;
+}

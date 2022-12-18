@@ -25,7 +25,7 @@ export default function Navbar(){
             <AppBar position='static' color='primary'>
                 <Toolbar>
                     <Typography variant='h6' component='div' sx={{flexGrow:1}}>
-                        <Link component='button' to='/' className={styles.link}>Harcama Takip App</Link>
+                        <Link component='button' to='/' className={styles.link}>Product App</Link>
                     </Typography>
                     {
                         !localStorage.getItem('user-info') &&

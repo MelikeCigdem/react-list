@@ -45,7 +45,31 @@ export default function Signup(){
     }
     const handleSubmit = (event) => {
         event.preventDefault();
-        navigate("/");
+        var myHeaders = new Headers();
+        myHeaders.append("accept", "application/json");
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+            "name": values.userName,
+            "password": values.password,
+            "email": values.email
+        });
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+
+        fetch("https://assignment-api.piton.com.tr/api/v1/user/register", requestOptions)
+            .then(response => response.text())
+            .then(result => {
+                console.log(JSON.parse(result).token);
+                if(JSON.parse(result).token){
+                    navigate("/login");
+                }
+            })
+            .catch(error => console.log('error', error));
     };
     return(
         <ThemeProvider theme={theme}>
