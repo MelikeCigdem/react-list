@@ -6,16 +6,9 @@ import Toolbar  from '@mui/material/Toolbar';
 import Button  from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import {useContext, useEffect} from "react";
-import Context from "./Store";
 
 
 export default function Navbar(){
-    const {state, dispatch} = useContext(Context);
-    useEffect(()=>{
-        if(state) {
-            console.log(state.userName + "---" + dispatch);
-        }
-    },[state])
     function logout(){
         localStorage.setItem("user-info",'');
         window.location.reload();

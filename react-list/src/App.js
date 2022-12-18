@@ -4,13 +4,11 @@ import Navbar from './components/Navbar';
 import Home from './pages/home/Home';
 import Login from './pages/login/Login';
 import Signup from './pages/signup/Signup';
-import Provider from "./components/Provider";
 import ListDetail from "./pages/detail/ListDetail";
 
 function App() {
     return (
         <div className="App">
-        <Provider>
             <BrowserRouter>
                 <Navbar/>
                 <Container>
@@ -22,7 +20,6 @@ function App() {
                     </Routes>
                 </Container>
             </BrowserRouter>
-        </Provider>
         </div>
     );
 }
