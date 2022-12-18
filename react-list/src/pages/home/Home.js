@@ -9,7 +9,7 @@ import Grid from '@mui/material/Grid';
 
 export default function Home(){
     const [datas, setDatas] = useState(null);
-    const [like, setLike] = useState("#b9b1b1")
+    const [select, setSelect] = useState([]);
     const config = {
         method: 'get',
         url: 'https://assignment-api.piton.com.tr/api/v1/product/all',
@@ -37,9 +37,6 @@ export default function Home(){
         color: theme.palette.text.secondary,
     }));
     function addLikes(id){
-        console.log(id);
-        setLike("#ffd700");
-
             var myHeaders = new Headers();
             myHeaders.append("accept", "application/json");
             myHeaders.append("access-token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN0cmluZyIsImlhdCI6MTY0OTg2MDExMiwiZXhwIjoxNjc1NzgwMTEyfQ.z8XYELsP1GBKkGpyvI14WzJKQAAbtQUwCl3hlLs_U4M");
@@ -59,10 +56,11 @@ export default function Home(){
             fetch("https://assignment-api.piton.com.tr/api/v1/product/like", requestOptions)
                 .then(response => response.text())
                 .then(result => {
-                    if(result.status == "Success"){
-                        console.log(result);
-
-                        console.log(like)
+                    if(JSON.parse(result).status === "Success"){
+                        if(!select.includes(id)){
+                            setSelect(current => [...current, id]);
+                        }
+                        console.log(select)
                     }
                 })
                 .catch(error => console.log('error', error));
@@ -72,22 +70,22 @@ export default function Home(){
         <Container sx={{mt:12}}>
             <Grid container spacing={2}>
                 <Grid item xs={2}>
-                    <Item>Name</Item>
+                    <Item className="text-position">Name</Item>
                 </Grid>
                 <Grid item xs={2}>
-                    <Item>Price</Item>
+                    <Item className="text-position">Price</Item>
                 </Grid>
                 <Grid item xs={2}>
-                    <Item>Image</Item>
+                    <Item className="text-position">Image</Item>
                 </Grid>
                 <Grid item xs={2}>
-                    <Item>TimeStamp</Item>
+                    <Item className="text-position">TimeStamp</Item>
                 </Grid>
                 <Grid item xs={2}>
-                    <Item>Description</Item>
+                    <Item className="text-position">Description</Item>
                 </Grid>
                 <Grid item xs={1}>
-                    <Item>Likes</Item>
+                    <Item className="text-position">Likes</Item>
                 </Grid>
                 <Grid item xs={1}>
 
@@ -117,7 +115,7 @@ export default function Home(){
                         </Grid>
                         <Grid item xs={1}>
                             <div className="table-body">
-                                <GradeIcon style={{ color: like }} onClick={() => addLikes(obj.id)} color="primary" />
+                                <GradeIcon style={{ color: select.includes(obj.id )? "#ffd700" : "#b9b1b1"}} onClick={() => addLikes(obj.id)} color="primary" />
                             </div>
                         </Grid>
                     </Grid>

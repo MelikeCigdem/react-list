@@ -11,7 +11,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function Copyright(props) {
@@ -30,6 +30,12 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function Login(){
+    useEffect(()=>{
+        if(localStorage.getItem('user-info')){
+            navigate("/");
+        }
+    },[]);
+
     const navigate = useNavigate();
     const [values, setValues] = useState({
         email:'',
@@ -40,13 +46,32 @@ export default function Login(){
     }
     const handleSubmit = (event) => {
         event.preventDefault();
-        // const data = new FormData(event.currentTarget);
-        // console.log({
-        //   email: data.get('email'),
-        //   password: data.get('password'),
-        // });
-        console.log(values);
-        navigate("/");
+        var myHeaders = new Headers();
+        myHeaders.append("accept", "application/json");
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+            "password": values.password,
+            "email": values.email
+        });
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+
+        fetch("https://assignment-api.piton.com.tr/api/v1/user/login", requestOptions)
+            .then(response => response.text())
+            .then(result => {
+                console.log(JSON.parse(result).token);
+                if(JSON.parse(result).token){
+                    localStorage.setItem("user-info",JSON.stringify(JSON.parse(result).token));
+                    window.location.reload();
+                    navigate("/");
+                }
+            })
+            .catch(error => console.log('error', error));
     };
     return(
         <ThemeProvider theme={theme}>

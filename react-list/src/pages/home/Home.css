@@ -4,3 +4,6 @@
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+.text-position{
+    text-align: left !important;
+}

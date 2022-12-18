@@ -4,20 +4,24 @@ import Navbar from './components/Navbar';
 import Home from './pages/home/Home';
 import Login from './pages/login/Login';
 import Signup from './pages/signup/Signup';
+import Provider from "./components/Provider";
+
 
 function App() {
     return (
         <div className="App">
+        <Provider>
             <BrowserRouter>
                 <Navbar/>
                 <Container>
                     <Routes>
-                        <Route path='/' element={<Home/>}/>
-                        <Route path='/login' element={<Login/>}/>
-                        <Route path='/signup' element={<Signup/>}/>
+                        <Route path='/' element={localStorage.getItem('user-info') ? <Home/>: <Login/>}/>
+                        <Route path='/login' element={!localStorage.getItem('user-info') ? <Login/> : <Home/>}/>
+                        <Route path='/signup'  element={!localStorage.getItem('user-info') ? <Signup/>: <Home/>}/>
                     </Routes>
                 </Container>
             </BrowserRouter>
+        </Provider>
         </div>
     );
 }
