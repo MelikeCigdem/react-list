@@ -115,7 +115,7 @@ export default function Signup(){
                             mask='(+1) 999 999 9999'
                         />
                         <InputMask
-                            mask="+90(999) 999 9999"
+                            mask="(+1) 999 999 9999"
                             value={values.telephone}
                             onChange={handleChange('telephone')}
                         >
